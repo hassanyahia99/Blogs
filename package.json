@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --inspect index.js",
+    "start": "node index.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "hassan yahia",
@@ -16,5 +17,8 @@
     "mongoose": "^5.11.12",
     "multer": "^1.4.2",
     "nodemon": "^2.0.7"
-  }
+  },
+  "engines": { 
+    "node": "14.15.3" 
+} 
 }
