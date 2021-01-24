@@ -88,14 +88,14 @@ router.post('/', upload.single('blogImg'),async (req, res, next) => {
     if (tag != undefined)
       _query.tags = tag
     if (body != undefined)
-      _query.body = { $regex: ".*" + body + ".*" }
+      _query.body = { $regex: "." + body + "." }
     if (limit == undefined || limit == '')
       limit = 10
     if (skip == undefined)
       skip = 0
     let _pagination = { limit: Number(limit), skip: Number(skip) }
     try {
-      const blogs = await getBlogs(_query, _pagination, author) //check in controller if author undefined
+      const blogs = await getBlogs(_query, _pagination, author) //check in controller if author undefined\
       res.json(blogs);
     } catch (e) {
       next(e);
