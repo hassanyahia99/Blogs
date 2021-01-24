@@ -6,10 +6,20 @@ const { MONGODB_URI } = process.env;
 mongoose.connect(MONGODB_URI, { useUnifiedTopology: true });
 const routes = require('./routes');
 
+
+
 const app = express();
 app.use(cors())
 app.use(express.json());
 app.use('/',routes)
+app.get('/getAll', async (req, res, next) => {
+  try {
+    const user = await getAll(); 
+    res.json(user);
+  } catch (e) {
+    next(e);
+  }
+});
 
 app.use('*', (req, res, next) => {
     res.status(404).json({ err: 'NOT_FOUND' });
