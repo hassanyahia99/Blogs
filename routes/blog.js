@@ -1,5 +1,5 @@
 const express= require('express');
-const{create,getAll,getBytitle,update,deleteOne }=require('../controllers/blog')
+const{create,getAll,getBytitle,update,deleteOne,getBlogs }=require('../controllers/blog')
 const router=express.Router();
 const authMiddleware=require('../middlewares/auth')
 
@@ -27,14 +27,7 @@ const filterFile=(req,res,cb) =>{
 }
 const upload=multer({storage:storage })
 
-/*router.get('/', async (req, res, next) => {
-  try {
-    const user = await getAll(); 
-    res.json(user);
-  } catch (e) {
-    next(e);
-  }
-});*/
+
 router.post('/', upload.single('blogImg'),async (req, res, next) => { 
   const {body,file,user:{id,username}}=req
   body.blogImg=file.path
@@ -87,6 +80,30 @@ router.post('/', upload.single('blogImg'),async (req, res, next) => {
       next(e);
     }
   });
+  router.get('/search', async (req, res, next) => {
+    let { query: { author, body, title, tag, limit, skip } } = req;
+    let _query = {}
+    if (title != undefined)
+      _query.title = { $regex: "^" + title }
+    if (tag != undefined)
+      _query.tags = tag
+    if (body != undefined)
+      _query.body = { $regex: ".*" + body + ".*" }
+    if (limit == undefined || limit == '')
+      limit = 10
+    if (skip == undefined)
+      skip = 0
+    let _pagination = { limit: Number(limit), skip: Number(skip) }
+    try {
+      const blogs = await getBlogs(_query, _pagination, author) //check in controller if author undefined
+      res.json(blogs);
+    } catch (e) {
+      next(e);
+    }
+  });
+
+
+
   router.patch('/:id', async (req, res, next) => {
     const {params : {id},body }=req
   try {

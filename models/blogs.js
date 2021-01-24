@@ -8,11 +8,13 @@ const blogSchema = new Schema({
     },    
     body:{
         type:String,
-        maxlength:140
+        maxlength:140,
+        required:true
     },
     tags:[String],
     blogImg:{
-        type: String
+        type: String,
+        required:true
     },
     userId:{
         type: Schema.Types.ObjectId,

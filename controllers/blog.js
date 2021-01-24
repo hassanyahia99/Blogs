@@ -17,6 +17,22 @@ const deleteOne= (id,userid) =>{
    })
    return("deleted")
 } 
+const { getUsers } = require('../controllers/user');
+
+const getBlogs = async (query, pagination, author) => {
+    if (author == undefined)
+        return blogModel.find(query).sort([['updatedAt',-1]]).limit(pagination.limit).skip(pagination.skip).exec();
+    else {
+        const foundUsers = await getUsers(author)
+        let blogsIds = []
+        foundUsers.forEach(u => {
+            blogsIds.push(...u.blogs)
+        })
+        console.log(...blogsIds)
+        return blogModel.find(query).where('_id').in(blogsIds)
+            .limit(pagination.limit).skip(pagination.skip).exec();
+    }
+}
 
 module.exports={
    create,
@@ -24,5 +40,6 @@ module.exports={
    getBytitle,
    update,
    deleteOne,
-   saveimg
+   saveimg,
+   getBlogs
 } 
