@@ -1,12 +1,10 @@
 const express = require('express');
 const mongoose=require('mongoose');
 const cors=require('cors')
-
+const {getAll}=require('./controllers/blog')
 const { MONGODB_URI } = process.env; 
 mongoose.connect(MONGODB_URI, { useUnifiedTopology: true });
 const routes = require('./routes');
-
-
 
 const app = express();
 app.use(cors())
