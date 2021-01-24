@@ -5,5 +5,5 @@ const authMiddleware=require('../middlewares/auth')
 
 const router=express.Router();
 router.use('/users',user)
-router.use('/blogs',blog)
+router.use('/blogs',authMiddleware,blog)
 module.exports = router
