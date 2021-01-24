@@ -27,15 +27,15 @@ const filterFile=(req,res,cb) =>{
 }
 const upload=multer({storage:storage })
 
-/*router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const user = await getAll(); 
     res.json(user);
   } catch (e) {
     next(e);
   }
-});*/
-router.post('/', upload.single('blogImg'),async (req, res, next) => { 
+});
+router.post('/', upload.single('blogImg'),authMiddleware,async (req, res, next) => { 
   const {body,file,user:{id,username}}=req
   body.blogImg=file.path
   try {
@@ -68,7 +68,7 @@ router.post('/', upload.single('blogImg'),async (req, res, next) => {
       next(e);
     }
   });*/
-  router.get('/', async (req, res, next) => {
+  router.get('/',authMiddleware, async (req, res, next) => {
     const { user : { id } } = req
     try {
       const user = await getAll({userId:id}); 
@@ -78,7 +78,7 @@ router.post('/', upload.single('blogImg'),async (req, res, next) => {
     }
   });
 
-  router.get('/:title', async (req, res, next) => {
+  router.get('/:title', authMiddleware,async (req, res, next) => {
       const {params : {title} }=req
     try {
       const user = await getBytitle(title);
@@ -87,7 +87,7 @@ router.post('/', upload.single('blogImg'),async (req, res, next) => {
       next(e);
     }
   });
-  router.patch('/:id', async (req, res, next) => {
+  router.patch('/:id',authMiddleware, async (req, res, next) => {
     const {params : {id},body }=req
   try {
     const user = await update(id,body);
@@ -96,7 +96,7 @@ router.post('/', upload.single('blogImg'),async (req, res, next) => {
     next(e);
   }
 });
-router.delete('/:blogid', async (req, res, next) => {
+router.delete('/:blogid',authMiddleware, async (req, res, next) => {
   debugger
     const { params: { blogid } ,user:{id}} = req;
     try {
