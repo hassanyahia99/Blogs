@@ -27,14 +27,14 @@ const filterFile=(req,res,cb) =>{
 }
 const upload=multer({storage:storage })
 
-router.get('/', async (req, res, next) => {
+/* router.get('/', async (req, res, next) => {
   try {
     const user = await getAll(); 
     res.json(user);
   } catch (e) {
     next(e);
   }
-});
+});*/
 router.post('/', upload.single('blogImg'),authMiddleware,async (req, res, next) => { 
   const {body,file,user:{id,username}}=req
   body.blogImg=file.path
